@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 	public float edgeWidth = 0.01f;
 	public Material edgeMaterial;
 	public InputManager inputManager;
+	public GameObject currentMaterialPrefab;
 	
     // Start is called before the first frame update
     void Start()
@@ -20,8 +21,18 @@ public class GameManager : MonoBehaviour
 		inputManager.registerListener("PrimaryEngagement", "stop", primaryEngagementEnded);
 		pointer.transform.localScale = Vector3.zero;
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
-		
     }
+	
+	GameObject  createCurrentMaterialAtCursor(){
+		return createPrefabAt(currentMaterialPrefab, cursor.transform);
+	}
+	
+	GameObject createPrefabAt(GameObject prefab, Transform transform){
+		GameObject createdObject = Instantiate(prefab, transform.position, Quaternion.identity);
+		createdObject.transform.rotation = transform.rotation;
+        createdObject.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
+		return createdObject;
+	}
 
     // Update is called once per frame
     void Update()
@@ -44,6 +55,7 @@ public class GameManager : MonoBehaviour
 	
 	void primaryEngagementEnded(){
 		Debug.Log("primaryEngagementEnded");
+		createCurrentMaterialAtCursor();
 	}
 	
 	Vector3 SnapPosition(Vector3 position){
