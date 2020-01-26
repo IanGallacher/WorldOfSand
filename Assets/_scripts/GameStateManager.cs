@@ -50,6 +50,24 @@ public class GameStateManager : MonoBehaviour
 	public void SetCurrentControlMode(ControlMode controlMode){
 		_currentControlMode = controlMode;
 	}
+	
+	public ControlMode IncrementControlMode(){
+		switch(_currentControlMode){
+			case ControlMode.Create:
+				SetCurrentControlMode(ControlMode.Edit);
+				break;
+			case ControlMode.Edit:
+				SetCurrentControlMode(ControlMode.Erase);
+				break;
+			case ControlMode.Erase:
+				SetCurrentControlMode(ControlMode.Manipulate);
+				break;
+			case ControlMode.Manipulate:
+				SetCurrentControlMode(ControlMode.Create);
+				break;
+		}
+		return _currentControlMode;
+	}
 
     // Awake is called once for the lifetime of the script, before start.
     // Used for setting up variables.
