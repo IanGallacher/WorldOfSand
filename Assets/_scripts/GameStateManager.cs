@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-enum GameState {
+public enum GameState {
 	Paused,
 	Play,
 }
 
-enum GameStateTransition {
+public enum GameStateTransition {
 	Pause,
 	Reset,
 	Run,
 }
 
-enum ControlMode {
+public enum ControlMode {
 	Edit,
 	Erase,
 	Manipulate,
@@ -22,7 +22,7 @@ enum ControlMode {
 
 
 [System.Serializable]
-public class GameStateTransationEvent : UnityEvent<GameStateTransition>
+public class GameStateTransitionEvent : UnityEvent<GameStateTransition>
 {
 
 }
