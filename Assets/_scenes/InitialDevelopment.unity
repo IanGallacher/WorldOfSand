@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e186178919078724fa0b64af7b0b328e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 0.2
+  gridSize: 0.1
   cursor: {fileID: 1448697239}
   pointer: {fileID: 2028207515}
   inputManager: {fileID: 689483602}
