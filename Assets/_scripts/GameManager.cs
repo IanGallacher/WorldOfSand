@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 	private GameStateManager gameStateManager;
 	private GameObject highlightedSelection;
 	private Material previousSelectionMaterial;
+	private Material originalCursorMaterial;
 	
     // Start is called before the first frame update
     void Start() {
@@ -54,13 +55,19 @@ public class GameManager : MonoBehaviour
 		if(newCursorPosition != cursor.transform.position){
 			inputManager.CursorMoved();
 		}*/
+		handleUserActions();
+    }
+	
+	void handleUserActions(){
 		switch(gameStateManager.CurrentControlMode) {
 			case ControlMode.Create:
 				TransformSnap snap = TransformSnap.SnapToClosest(pointer, placedMaterials);
 				cursor.transform.position = snap.transform.position;
 				cursor.transform.rotation = snap.transform.rotation;
 				if(snap.snapped){
-					// TODO: Indicate snapping
+					cursor.GetComponent<Renderer>().material = highlightMaterial;
+				} else {
+					cursor.GetComponent<Renderer>().material = originalCursorMaterial;
 				}
 				break;
 			case ControlMode.Edit:
@@ -73,7 +80,7 @@ public class GameManager : MonoBehaviour
 				}
 				break;
 		}
-    }
+	}
 	
 	void ClearHighlightedSelection(){
 		if(highlightedSelection == null)
