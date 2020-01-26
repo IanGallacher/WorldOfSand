@@ -12,7 +12,9 @@ public class TransformSnap
 	
 	private static GameObject transformHolder = new GameObject();
 	
-	public static TransformSnap SnapToClosest(GameObject subject, List<GameObject> targets, float maximumSquaredDistance = 2){
+	public static TransformSnap SnapToClosest(GameObject subject, List<GameObject> targets, float maximumSquaredDistance = 0){
+		if(maximumSquaredDistance == 0)
+			maximumSquaredDistance = gridSize * gridSize * 2;
 		GameObject bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = subject.transform.position;
