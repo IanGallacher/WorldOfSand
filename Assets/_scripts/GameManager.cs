@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 	public InputManager inputManager;
 	public GameObject currentMaterialPrefab;
 	
-	private string primaryEngagementAxis = "Fire1";
+	private string primaryInteractionButton = "Fire1";
 	
 	private List<GameObject> placedMaterials = new List<GameObject>();
 	
@@ -21,9 +21,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 		TransformSnap.gridSize = gridSize;
-		inputManager.registerListener(primaryEngagementAxis, "start", primaryEngagementStarted);
-		inputManager.registerListener(primaryEngagementAxis, "drag", primaryEngagementDragged);
-		inputManager.registerListener(primaryEngagementAxis, "stop", primaryEngagementEnded);
+		inputManager.registerListener(primaryInteractionButton, "start", primaryEngagementStarted);
+		inputManager.registerListener(primaryInteractionButton, "drag", primaryEngagementDragged);
+		inputManager.registerListener(primaryInteractionButton, "stop", primaryEngagementEnded);
 		pointer.transform.localScale = Vector3.zero;
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
     }
