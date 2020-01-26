@@ -13,14 +13,17 @@ public class GameManager : MonoBehaviour
 	public InputManager inputManager;
 	public GameObject currentMaterialPrefab;
 	
+	private string primaryEngagementAxis = "Fire1";
+	
 	private List<GameObject> placedMaterials = new List<GameObject>();
 	
     // Start is called before the first frame update
     void Start()
     {
-		inputManager.registerListener("PrimaryEngagement", "start", primaryEngagementStarted);
-		inputManager.registerListener("PrimaryEngagement", "drag", primaryEngagementDragged);
-		inputManager.registerListener("PrimaryEngagement", "stop", primaryEngagementEnded);
+		TransformSnap.gridSize = gridSize;
+		inputManager.registerListener(primaryEngagementAxis, "start", primaryEngagementStarted);
+		inputManager.registerListener(primaryEngagementAxis, "drag", primaryEngagementDragged);
+		inputManager.registerListener(primaryEngagementAxis, "stop", primaryEngagementEnded);
 		pointer.transform.localScale = Vector3.zero;
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
     }

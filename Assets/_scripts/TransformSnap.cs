@@ -8,6 +8,8 @@ public class TransformSnap
 	public bool snapped;
 	public GameObject target;
 	
+	public static float gridSize;
+	
 	private static GameObject transformHolder = new GameObject();
 	
 	public static TransformSnap SnapToClosest(GameObject subject, List<GameObject> targets, float maximumSquaredDistance = 2){
@@ -31,16 +33,18 @@ public class TransformSnap
 	}
 	
 	public static TransformSnap SnapTo(GameObject subject, GameObject target){
+		float cubeApothem = gridSize / 2;
+		
 		TransformSnap snap = new TransformSnap();
 		snap.snapped = true;
 		snap.transform = transformHolder.transform;
 		Vector3 directionToTarget = target.transform.position - subject.transform.position;
-		Vector3 upPosition = target.transform.position + target.transform.up * 0.25f;
-		Vector3 leftPosition = target.transform.position - target.transform.right * 0.25f;
-		Vector3 backPosition = target.transform.position - target.transform.forward * 0.25f;
-		Vector3 rightPosition = target.transform.position + target.transform.right * 0.25f;
-		Vector3 forwardPosition = target.transform.position + target.transform.forward * 0.25f;
-		Vector3 downPosition = target.transform.position - target.transform.up * 0.25f;
+		Vector3 upPosition = target.transform.position + target.transform.up * cubeApothem;
+		Vector3 leftPosition = target.transform.position - target.transform.right * cubeApothem;
+		Vector3 backPosition = target.transform.position - target.transform.forward * cubeApothem;
+		Vector3 rightPosition = target.transform.position + target.transform.right * cubeApothem;
+		Vector3 forwardPosition = target.transform.position + target.transform.forward * cubeApothem;
+		Vector3 downPosition = target.transform.position - target.transform.up * cubeApothem;
 		
 		Vector3 upDistance = upPosition - subject.transform.position;
 		Vector3 leftDistance = leftPosition - subject.transform.position;
@@ -74,7 +78,7 @@ public class TransformSnap
 		// direction = Vector3.Normalize(direction);
 		
 		snap.transform.rotation = target.transform.rotation;
-		snap.transform.position = target.transform.position + direction * 0.5f;
+		snap.transform.position = target.transform.position + direction * gridSize;
 		snap.target = target;
 		return snap;
 	}
