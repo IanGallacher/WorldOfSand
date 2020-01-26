@@ -33,11 +33,18 @@ public class GameStateManager : MonoBehaviour
 
     [SerializeField]
     private GameState _currentGameState;
+	[SerializeField]
+	private ControlMode _currentControlMode;
 
     public GameState CurrentGameState 
     {
         get => _currentGameState;
     }
+	
+	public ControlMode CurrentControlMode
+	{
+		get => _currentControlMode;
+	}
 
     // Awake is called once for the lifetime of the script, before start.
     // Used for setting up variables.
