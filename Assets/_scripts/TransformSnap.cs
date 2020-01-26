@@ -13,11 +13,22 @@ public class TransformSnap
 	private static GameObject transformHolder = new GameObject();
 	
 	public static TransformSnap SnapToClosest(GameObject subject, List<GameObject> targets, float maximumSquaredDistance = 0){
+		GameObject bestTarget = GetClosestObject(subject, targets, maximumSquaredDistance);
+		if(bestTarget == null){
+			return Unsnapped(subject.transform);
+		}
+		return SnapTo(subject, bestTarget);
+	}
+	
+	public static GameObject GetClosestObject(GameObject subject, List<GameObject> targets, float maximumSquaredDistance = 0){
+		return GetClosestObject(subject.transform.position, targets, maximumSquaredDistance);
+	}
+	
+	public static GameObject GetClosestObject(Vector3 currentPosition, List<GameObject> targets, float maximumSquaredDistance = 0){
 		if(maximumSquaredDistance == 0)
 			maximumSquaredDistance = gridSize * gridSize * 2;
 		GameObject bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
-        Vector3 currentPosition = subject.transform.position;
         foreach(GameObject target in targets)
         {
             Vector3 directionToTarget = target.transform.position - currentPosition;
@@ -29,9 +40,9 @@ public class TransformSnap
             }
         }
 		if(closestDistanceSqr <= maximumSquaredDistance){
-			return SnapTo(subject, bestTarget);
+			return bestTarget;
 		}
-        return Unsnapped(subject.transform);
+		return null;
 	}
 	
 	public static TransformSnap SnapTo(GameObject subject, GameObject target){

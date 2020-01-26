@@ -15,6 +15,7 @@ public enum GameStateTransition {
 }
 
 public enum ControlMode {
+	Create,
 	Edit,
 	Erase,
 	Manipulate,
@@ -34,7 +35,7 @@ public class GameStateManager : MonoBehaviour
     [SerializeField]
     private GameState _currentGameState;
 	[SerializeField]
-	private ControlMode _currentControlMode;
+	private ControlMode _currentControlMode = ControlMode.Create;
 
     public GameState CurrentGameState 
     {
@@ -44,6 +45,10 @@ public class GameStateManager : MonoBehaviour
 	public ControlMode CurrentControlMode
 	{
 		get => _currentControlMode;
+	}
+	
+	public void SetCurrentControlMode(ControlMode controlMode){
+		_currentControlMode = controlMode;
 	}
 
     // Awake is called once for the lifetime of the script, before start.
