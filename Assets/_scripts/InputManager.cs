@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
 	private Dictionary<string, Dictionary<string, Action>> listeners;
 	private Dictionary<string, bool> active;
 	
-    void Start()
+    void Awake()
     {
         listeners = new Dictionary<string, Dictionary<string, Action>>();
 		active = new Dictionary<string, bool>();
