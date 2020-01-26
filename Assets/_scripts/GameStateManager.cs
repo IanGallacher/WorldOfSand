@@ -29,8 +29,15 @@ public class GameStateTransitionEvent : UnityEvent<GameStateTransition>
 
 public class GameStateManager : MonoBehaviour
 {
+    public GameStateTransitionEvent gameStateTransitionEvent;
+
     [SerializeField]
     private GameState _currentGameState;
+
+    public GameState CurrentGameState 
+    {
+        get => _currentGameState;
+    }
 
     // Awake is called once for the lifetime of the script, before start.
     // Used for setting up variables.
@@ -39,15 +46,7 @@ public class GameStateManager : MonoBehaviour
         _currentGameState = GameState.Paused;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void TransitionGameState(GameStateTransition transition) {
+        gameStateTransitionEvent.Invoke(transition);
     }
 }
