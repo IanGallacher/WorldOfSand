@@ -65,7 +65,9 @@ public class GameManager : MonoBehaviour
 				break;
 			case ControlMode.Edit:
 				GameObject possibleSelection = TransformSnap.GetClosestObject(pointer, placedMaterials);
-				if(possibleSelection != null && possibleSelection != highlightedSelection) {
+				if(possibleSelection == null){
+					ClearHighlightedSelection();
+				} else if(possibleSelection != highlightedSelection) {
 					ClearHighlightedSelection();
 					HighlightSelection(possibleSelection);
 				}
