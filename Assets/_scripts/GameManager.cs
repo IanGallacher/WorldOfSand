@@ -18,9 +18,11 @@ public class GameManager : MonoBehaviour
 	
 	private List<GameObject> placedMaterials = new List<GameObject>();
 	private GameStateManager gameStateManager;
-	private GameObject highlightedSelection;
-	private Material previousSelectionMaterial;
+	private CompoundObject highlightedSelection;
 	private Material originalCursorMaterial;
+	private GameObject snappedTo;
+	private bool snapped = false;
+	private IDictionary<GameObject, Material> previousMaterials = new Dictionary<GameObject, Material>();
 	
     // Start is called before the first frame update
     void Start() {
@@ -28,23 +30,28 @@ public class GameManager : MonoBehaviour
 		inputManager.registerListener(primaryInteractionButton, "start", primaryEngagementStarted);
 		inputManager.registerListener(primaryInteractionButton, "drag", primaryEngagementDragged);
 		inputManager.registerListener(primaryInteractionButton, "stop", primaryEngagementEnded);
-		inputManager.registerListener("Mouse ScrollWheel", "stop", mouseScrollWheelStopped);
+		inputManager.registerListener("Mouse ScrollWheel", "start", mouseScrollWheelStarted);
 		
 		pointer.transform.localScale = Vector3.zero;
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
+		originalCursorMaterial = cursor.GetComponent<Renderer>().material;
 		gameStateManager = GameObject.Find("GameManager").GetComponent<GameStateManager>();
     }
 	
-	GameObject createCurrentMaterialAtCursor(){
-		return createPrefabAt(currentMaterialPrefab, cursor.transform);
+	GameObject createCurrentMaterialAtCursor(CompoundObject compound = null){
+		return createPrefabAt(currentMaterialPrefab, cursor.transform, true, compound);
 	}
 	
-	GameObject createPrefabAt(GameObject prefab, Transform transform, bool placedMaterial = true) {
-		GameObject createdObject = Instantiate(prefab, transform.position, Quaternion.identity);
+	GameObject createPrefabAt(GameObject prefab, Transform transform, bool placedMaterial = true, CompoundObject compound = null) {
+		GameObject createdObject = Instantiate(prefab, transform.position, Quaternion.identity);		
 		createdObject.transform.rotation = transform.rotation;
         createdObject.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
-		if(placedMaterial)
+		if(placedMaterial){
 			placedMaterials.Add(createdObject);
+			if(compound != null){
+				compound.Add(createdObject);
+			}
+		}
 		
 		return createdObject;
 	}
@@ -64,19 +71,26 @@ public class GameManager : MonoBehaviour
 				TransformSnap snap = TransformSnap.SnapToClosest(pointer, placedMaterials);
 				cursor.transform.position = snap.transform.position;
 				cursor.transform.rotation = snap.transform.rotation;
+				snapped = snap.snapped;
 				if(snap.snapped){
 					cursor.GetComponent<Renderer>().material = highlightMaterial;
+					snappedTo = snap.target;
 				} else {
 					cursor.GetComponent<Renderer>().material = originalCursorMaterial;
 				}
 				break;
 			case ControlMode.Edit:
 				GameObject possibleSelection = TransformSnap.GetClosestObject(pointer, placedMaterials);
-				if(possibleSelection == null){
+				if(possibleSelection == null) {
 					ClearHighlightedSelection();
-				} else if(possibleSelection != highlightedSelection) {
-					ClearHighlightedSelection();
-					HighlightSelection(possibleSelection);
+				} else {
+					if(highlightedSelection != null){
+						ClearHighlightedSelection();
+					}
+					CompoundObject compoundSelection = CompoundObject.GetCompoundFor(possibleSelection);
+					if(compoundSelection != highlightedSelection) {
+						HighlightSelection(compoundSelection);
+					}
 				}
 				break;
 		}
@@ -86,14 +100,21 @@ public class GameManager : MonoBehaviour
 		if(highlightedSelection == null)
 			return;
 		
-		highlightedSelection.GetComponent<Renderer>().material = previousSelectionMaterial;
+		foreach(GameObject gameObject in highlightedSelection.objects){
+			gameObject.GetComponent<Renderer>().material = previousMaterials[gameObject];
+		}
+		highlightedSelection = null;
 	}
 	
-	void HighlightSelection(GameObject selection){
-		Debug.Log("HighlightSelection");
+	void HighlightSelection(CompoundObject selection){
 		highlightedSelection = selection;
-		previousSelectionMaterial = selection.GetComponent<Renderer>().material;
-		selection.GetComponent<Renderer>().material = highlightMaterial;
+		
+		foreach(GameObject gameObject in selection.objects){
+			if(gameObject.GetComponent<Renderer>().material != highlightMaterial)
+				previousMaterials[gameObject] = gameObject.GetComponent<Renderer>().material;
+			
+			gameObject.GetComponent<Renderer>().material = highlightMaterial;
+		}
 	}
 	
 	void primaryEngagementStarted() {
@@ -108,7 +129,7 @@ public class GameManager : MonoBehaviour
 		// Debug.Log("primaryEngagementEnded");
 		switch(gameStateManager.CurrentControlMode){
 			case ControlMode.Create:
-				createCurrentMaterialAtCursor();
+				createCurrentMaterialAtCursor(snapped ? CompoundObject.GetCompoundFor(snappedTo) : null);
 				break;
 			case ControlMode.Edit:
 				editCurrentHighlight();
@@ -116,9 +137,10 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
-	void mouseScrollWheelStopped() {
-		// Debug.Log("mouseScrollWheelStopped");
-		gameStateManager.SetCurrentControlMode(ControlMode.Edit);
+	void mouseScrollWheelStarted() {
+		Debug.Log("mouseScrollWheelStarted");
+		// gameStateManager.SetCurrentControlMode(ControlMode.Create);
+		Debug.Log(gameStateManager.IncrementControlMode());
 	}
 	
 	void editCurrentHighlight() {
