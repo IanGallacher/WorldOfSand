@@ -414,6 +414,76 @@ PrefabInstance:
       propertyPath: m_Name
       value: VRTK Setup
       objectReference: {fileID: 0}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 689483602}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145260264795658, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: RightSqueezeFired
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 689483602}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8117145261209764348, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a,
+        type: 3}
+      propertyPath: Activated.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: LeftSqueezeFired
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8dc44cdd11a8c02b7a9ecc8ff500fc0a, type: 3}
 --- !u!1 &949802985

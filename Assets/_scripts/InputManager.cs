@@ -29,6 +29,14 @@ public class InputManager : MonoBehaviour
 		}
     }
 
+	public void RightSqueezeFired() {
+		InstantiateGizmo();
+	}
+
+	public void LeftSqueezeFired() {
+		InstantiateGizmo();
+	}
+
 	public void RightTriggerFired() {
 		InstantiateGizmo();
 	}
