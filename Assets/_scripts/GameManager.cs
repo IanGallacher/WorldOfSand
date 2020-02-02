@@ -4,10 +4,11 @@ using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
-{
+{	
 	public float gridSize;
 	public GameObject cursor;
 	public GameObject pointer;
+	public GameObject secondaryPointer;
 	// public float edgeWidth = 0.01f;
 	// public Material edgeMaterial;
 	public InputManager inputManager;
@@ -17,12 +18,20 @@ public class GameManager : MonoBehaviour
 	private string primaryInteractionButton = "Fire1";
 	
 	private List<GameObject> placedMaterials = new List<GameObject>();
+	private List<GameObject> uiObjects = new List<GameObject>();
 	private GameStateManager gameStateManager;
 	private CompoundObject highlightedSelection;
 	private Material originalCursorMaterial;
 	private GameObject snappedTo;
 	private bool snapped = false;
 	private IDictionary<GameObject, Material> previousMaterials = new Dictionary<GameObject, Material>();
+	private GameObject compoundObjectMenu;
+	private GameObject subSelectionTool;
+	private bool primaryManipulationActive = false;
+	private bool secondaryManipulationActive = false;
+	private GameObject manipulationAnchor;
+	private GameObject manipulationAnchorTarget;
+	private GameObject manipulationLookTarget;
 	
     // Start is called before the first frame update
     void Start() {
@@ -36,6 +45,13 @@ public class GameManager : MonoBehaviour
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
 		originalCursorMaterial = cursor.GetComponent<Renderer>().material;
 		gameStateManager = GameObject.Find("GameManager").GetComponent<GameStateManager>();
+		
+		manipulationAnchor = Instantiate(new GameObject(), transform.position, Quaternion.identity);
+		manipulationAnchor.AddComponent<Follower>();
+		Follower anchorFollower = manipulationAnchor.GetComponent<Follower>();
+		anchorFollower.target = pointer;
+		
+		compoundObjectMenu = ConstructCompoundObjectMenu();
     }
 	
 	GameObject createCurrentMaterialAtCursor(CompoundObject compound = null){
@@ -43,7 +59,7 @@ public class GameManager : MonoBehaviour
 	}
 	
 	GameObject createPrefabAt(GameObject prefab, Transform transform, bool placedMaterial = true, CompoundObject compound = null) {
-		GameObject createdObject = Instantiate(prefab, transform.position, Quaternion.identity);		
+		GameObject createdObject = Instantiate(prefab, transform.position, Quaternion.identity);
 		createdObject.transform.rotation = transform.rotation;
         createdObject.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
 		if(placedMaterial){
@@ -80,6 +96,7 @@ public class GameManager : MonoBehaviour
 				}
 				break;
 			case ControlMode.Edit:
+			case ControlMode.Manipulate:
 				GameObject possibleSelection = TransformSnap.GetClosestObject(pointer, placedMaterials);
 				if(possibleSelection == null) {
 					ClearHighlightedSelection();
@@ -93,7 +110,25 @@ public class GameManager : MonoBehaviour
 					}
 				}
 				break;
+			/*case ControlMode.Manipulate:
+				GameObject possibleTool = TransformSnap.GetClosestObject(pointer, uiObjects);
+				if(possibleTool == null) {
+					ClearHighlightedSelection();
+				} else {
+					if(highlightedSelection != null){
+						ClearHighlightedSelection();
+					}
+					CompoundObject compoundSelection = CompoundObject.GetCompoundFor(possibleTool);
+					if(compoundSelection != highlightedSelection) {
+						HighlightSelection(compoundSelection);
+					}
+				}
+				break;*/
 		}
+	}
+	
+	void adoptTool(Tool tool, Collision collision){
+		Debug.Log("Adopting tool " + tool.name);
 	}
 	
 	void ClearHighlightedSelection(){
@@ -117,8 +152,82 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
+	void startManipulation(string engagementType){
+		switch(engagementType){
+			case "primary":
+				if(secondaryManipulationActive){
+					startTwoControllerManipulation();
+				} else {
+					startPrimaryManipulation();
+				}
+				break;
+			case "secondary":
+				if(primaryManipulationActive){
+					startTwoControllerManipulation();
+				} else {
+					startSecondayManipuation();
+				}
+				break;
+		}	
+	}
+	
+	void startPrimaryManipulation(){
+		primaryManipulationActive = true;
+		highlightedSelection.getParent().transform.parent = manipulationAnchor.transform;
+	}
+	
+	void startSecondayManipuation(){
+		secondaryManipulationActive = true;
+	}
+	
+	void startTwoControllerManipulation(){
+		primaryManipulationActive = true;
+		secondaryManipulationActive = true;
+		
+	}
+	
+	void endManipulation(string engagementType){
+		switch(engagementType){
+			case "primary":
+				if(secondaryManipulationActive){
+					endTwoControllerManipulation();
+					startSecondayManipuation();
+				} else {
+					endPrimaryManipulation();
+				}
+				break;
+			case "secondary":
+				if(primaryManipulationActive){
+					endTwoControllerManipulation();
+					startPrimaryManipulation();
+				} else {
+					endSecondaryManipulation();
+				}
+				break;
+		}
+	}
+	
+	void endPrimaryManipulation(){
+		primaryManipulationActive = false;
+		highlightedSelection.getParent().transform.parent = transform;
+	}
+	
+	void endSecondaryManipulation(){
+		secondaryManipulationActive = false;
+	}
+	
+	void endTwoControllerManipulation(){
+		primaryManipulationActive = false;
+		secondaryManipulationActive = false;
+	}
+	
 	void primaryEngagementStarted() {
-		// Debug.Log("primaryEngagementStarted");
+		Debug.Log("primaryEngagementStarted");
+		switch(gameStateManager.CurrentControlMode){
+			case ControlMode.Manipulate:
+				startManipulation("primary");
+				break;
+		}
 	}
 	
 	void primaryEngagementDragged() {
@@ -133,6 +242,9 @@ public class GameManager : MonoBehaviour
 				break;
 			case ControlMode.Edit:
 				editCurrentHighlight();
+				break;
+			case ControlMode.Manipulate:
+				endManipulation("primary");
 				break;
 		}
 	}
@@ -149,5 +261,28 @@ public class GameManager : MonoBehaviour
 	
 	Vector3 SnapPosition(Vector3 position) {
 		return position;
+	}
+	
+	GameObject ConstructCompoundObjectMenu() {
+		GameObject menu = Instantiate(new GameObject(), new Vector3(0, 1f, 0), Quaternion.identity);
+		
+		GameObject subSelectionTool = Instantiate(new GameObject(), menu.transform.position, Quaternion.identity);
+		subSelectionTool.transform.parent = menu.transform;
+		
+		GameObject cube = createPrefabAt(currentMaterialPrefab, menu.transform, false);
+		cube.transform.parent = subSelectionTool.transform;
+		cube = createPrefabAt(currentMaterialPrefab, menu.transform, false);
+		cube.transform.position += new Vector3(0, 0, gridSize);
+		cube.transform.parent = subSelectionTool.transform;
+		cube.GetComponent<Renderer>().material = highlightMaterial;
+		cube = createPrefabAt(currentMaterialPrefab, menu.transform, false);
+		cube.transform.position += (new Vector3(0, 0, gridSize) * 2f);
+		cube.transform.parent = subSelectionTool.transform;
+		
+		subSelectionTool.transform.localScale *= 0.3f;
+		uiObjects.Add(subSelectionTool);
+		subSelectionTool.AddComponent<Tool>();
+		
+		return menu;
 	}
 }
