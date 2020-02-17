@@ -22,7 +22,8 @@ public class MoleculeDebugMenu : EditorWindow
 
     private void renderControllerButtons()
     {
-        InputManager inputManager = GameObject.Find("/InputManager").GetComponent<InputManager>();
+        InputManager inputManager = GameObject.Find("/InputManager")?.GetComponent<InputManager>();
+        if(inputManager == null) return;
 
         if (GUILayout.Button("Squeeze Right")) {
             inputManager.RightSqueezeFired();

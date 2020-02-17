@@ -895,7 +895,7 @@ PrefabInstance:
     - target: {fileID: 3959438040354873629, guid: 40200e4712710a69e9b0f76bf30630f6,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4292083305150821367, guid: 40200e4712710a69e9b0f76bf30630f6,
         type: 3}
@@ -937,6 +937,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -238.499
       objectReference: {fileID: 0}
+    - target: {fileID: 5516039406401995457, guid: 40200e4712710a69e9b0f76bf30630f6,
+        type: 3}
+      propertyPath: _newControlMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7203057081492505021, guid: 40200e4712710a69e9b0f76bf30630f6,
         type: 3}
       propertyPath: m_Name
@@ -945,6 +950,11 @@ PrefabInstance:
     - target: {fileID: 7203057081492505022, guid: 40200e4712710a69e9b0f76bf30630f6,
         type: 3}
       propertyPath: handObjects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7203057081492505022, guid: 40200e4712710a69e9b0f76bf30630f6,
+        type: 3}
+      propertyPath: _handObjects.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7203057081492505022, guid: 40200e4712710a69e9b0f76bf30630f6,
@@ -967,6 +977,16 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 428117308}
+    - target: {fileID: 7203057081492505022, guid: 40200e4712710a69e9b0f76bf30630f6,
+        type: 3}
+      propertyPath: _handObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 279537374}
+    - target: {fileID: 7203057081492505022, guid: 40200e4712710a69e9b0f76bf30630f6,
+        type: 3}
+      propertyPath: _handObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 343320822}
     - target: {fileID: 7203057081492505023, guid: 40200e4712710a69e9b0f76bf30630f6,
         type: 3}
       propertyPath: m_LocalPosition.x
