@@ -13,13 +13,10 @@ public class Tool : MonoBehaviour
 	}
 	
 	void Start() {
-		Debug.Log("Tool starting.");
-		
 		gameObject.AddComponent<BoxCollider>();
 	}
 	
 	void OnCollisionEnter(Collision collision) {
-		Debug.Log("Collision Entered.");
 		collisionCallback(this, collision);
 	}
 }

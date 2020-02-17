@@ -19,10 +19,6 @@ public class TransitionControlMode : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-		
-         Debug.Log("Switch Collision");
-		 
-         Debug.Log(col.gameObject.name);
 		if(_inputManager.handObjects.Contains(col.gameObject)) {
 			_gameStateManager.SetCurrentControlMode(_newControlMode);
 			_toolGizmo.SetActive(false);
