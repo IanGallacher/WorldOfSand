@@ -21,7 +21,6 @@ public class InputManager : MonoBehaviour
 		active = new Dictionary<string, bool>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         foreach(KeyValuePair<string, Dictionary<string, Action>> axis in listeners){
@@ -30,31 +29,28 @@ public class InputManager : MonoBehaviour
     }
 
 	public void RightSqueezeFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void LeftSqueezeFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void RightTriggerFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void LeftTriggerFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void ControllerSqueezed() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
-	private void InstantiateGizmo() {
-		// if(_currentGizmo == null)
-		// 	_currentGizmo = Instantiate(_toolGizmo, new Vector3(0,0,0), Quaternion.identity);
-		// else
-		// _currentGizmo.GetComponent<Transform>().position = hs.GetComponent<Transform>().position;
+	private void InstantiateModeSelectMenu() {
 		_toolGizmo.transform.position = _playerPosition.transform.position;
+		_toolGizmo.SetActive(true);
 	}
 	
 	public void registerListener(string axis, string action, Action callback){
