@@ -13,7 +13,13 @@ public class InputManager : MonoBehaviour
 	[SerializeField]
 	private GameObject _playerPosition;
 
-	public List<GameObject> handObjects;
+	[SerializeField]
+	private List<GameObject> _handObjects;
+    public List<GameObject> handObjects { get => _handObjects; }
+
+	[SerializeField]
+	private GameObject _camera;
+    public List<GameObject> camera { get => camera; }
 
     void Awake()
     {
@@ -50,6 +56,11 @@ public class InputManager : MonoBehaviour
 
 	private void InstantiateModeSelectMenu() {
 		_toolGizmo.transform.position = _playerPosition.transform.position;
+
+		// Vector3 relativePos = _playerPosition.transform.position - _toolGizmo.transform.position;
+		// _toolGizmo.transform.rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+		_toolGizmo.transform.LookAt(_camera.transform);
+
 		_toolGizmo.SetActive(true);
 	}
 	
