@@ -517,7 +517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _toolGizmo: {fileID: 3959438040354873629}
-  _handLocation: {fileID: 0}
+  _playerPosition: {fileID: 0}
+  handObjects: []
 --- !u!1001 &36543159647301362
 PrefabInstance:
   m_ObjectHideFlags: 0
