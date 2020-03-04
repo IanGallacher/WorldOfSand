@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 	private GameObject manipulationAnchor;
 	private GameObject manipulationAnchorTarget;
 	private GameObject manipulationLookTarget;
+	private bool paused = true;
 	
     // Start is called before the first frame update
     void Start() {
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
 		inputManager.registerListener(primaryInteractionButton, "drag", primaryEngagementDragged);
 		inputManager.registerListener(primaryInteractionButton, "stop", primaryEngagementEnded);
 		inputManager.registerListener("Mouse ScrollWheel", "start", mouseScrollWheelStarted);
+		inputManager.registerButton("TogglePause", togglePause);
 		
 		pointer.transform.localScale = Vector3.zero;
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
@@ -52,6 +54,8 @@ public class GameManager : MonoBehaviour
 		anchorFollower.target = pointer;
 		
 		compoundObjectMenu = ConstructCompoundObjectMenu();
+		
+		pause();
     }
 	
 	GameObject createCurrentMaterialAtCursor(CompoundObject compound = null){
@@ -250,13 +254,14 @@ public class GameManager : MonoBehaviour
 	}
 	
 	void mouseScrollWheelStarted() {
-		Debug.Log("mouseScrollWheelStarted");
-		// gameStateManager.SetCurrentControlMode(ControlMode.Create);
+		// Debug.Log("mouseScrollWheelStarted");
 		Debug.Log(gameStateManager.IncrementControlMode());
 	}
 	
 	void editCurrentHighlight() {
 		Debug.Log("editCurrentHighlight()...");
+		// highlightedSelection.objects[0].GetComponent<Emitter>().setFrequency(600);
+		highlightedSelection.objects[0].GetComponent<Emitter>().turnOn();
 	}
 	
 	Vector3 SnapPosition(Vector3 position) {
@@ -284,5 +289,25 @@ public class GameManager : MonoBehaviour
 		subSelectionTool.AddComponent<Tool>();
 		
 		return menu;
+	}
+	
+	void pause(){
+		Time.timeScale = 0.01f;
+		paused = true;
+		Debug.Log("paused");
+	}
+	
+	void unpause(){
+		Time.timeScale = 1;
+		paused = false;
+		Debug.Log("unpaused");
+	}
+	
+	void togglePause(){
+		if(paused){
+			unpause();
+		} else {
+			pause();
+		}
 	}
 }
