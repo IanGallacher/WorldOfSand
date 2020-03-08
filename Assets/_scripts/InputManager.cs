@@ -14,7 +14,13 @@ public class InputManager : MonoBehaviour
 	[SerializeField]
 	private GameObject _playerPosition;
 
-	public List<GameObject> handObjects;
+	[SerializeField]
+	private List<GameObject> _handObjects;
+    public List<GameObject> handObjects { get => _handObjects; }
+
+	[SerializeField]
+	private GameObject _camera;
+    public List<GameObject> camera { get => camera; }
 
     void Awake()
     {
@@ -23,7 +29,6 @@ public class InputManager : MonoBehaviour
 		active = new Dictionary<string, bool>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         foreach(KeyValuePair<string, Dictionary<string, Action>> axis in listeners){
@@ -35,31 +40,33 @@ public class InputManager : MonoBehaviour
     }
 
 	public void RightSqueezeFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void LeftSqueezeFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void RightTriggerFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void LeftTriggerFired() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
 	public void ControllerSqueezed() {
-		InstantiateGizmo();
+		InstantiateModeSelectMenu();
 	}
 
-	private void InstantiateGizmo() {
-		// if(_currentGizmo == null)
-		// 	_currentGizmo = Instantiate(_toolGizmo, new Vector3(0,0,0), Quaternion.identity);
-		// else
-		// _currentGizmo.GetComponent<Transform>().position = hs.GetComponent<Transform>().position;
+	private void InstantiateModeSelectMenu() {
 		_toolGizmo.transform.position = _playerPosition.transform.position;
+
+		// Vector3 relativePos = _playerPosition.transform.position - _toolGizmo.transform.position;
+		// _toolGizmo.transform.rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+		_toolGizmo.transform.LookAt(_camera.transform);
+
+		_toolGizmo.SetActive(true);
 	}
 	
 	public void registerListener(string axis, string action, Action callback){
