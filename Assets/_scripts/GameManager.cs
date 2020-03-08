@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
 		inputManager.registerListener(primaryInteractionButton, "start", primaryEngagementStarted);
 		inputManager.registerListener(primaryInteractionButton, "drag", primaryEngagementDragged);
 		inputManager.registerListener(primaryInteractionButton, "stop", primaryEngagementEnded);
-		inputManager.registerListener("Mouse ScrollWheel", "start", mouseScrollWheelStarted);
 		inputManager.registerButton("TogglePause", togglePause);
 		
 		pointer.transform.localScale = Vector3.zero;
@@ -132,7 +131,7 @@ public class GameManager : MonoBehaviour
 	}
 	
 	void adoptTool(Tool tool, Collision collision){
-		Debug.Log("Adopting tool " + tool.name);
+		// Debug.Log("Adopting tool " + tool.name);
 	}
 	
 	void ClearHighlightedSelection(){
@@ -210,34 +209,33 @@ public class GameManager : MonoBehaviour
 				break;
 		}
 	}
-	
+
 	void endPrimaryManipulation(){
 		primaryManipulationActive = false;
 		highlightedSelection.getParent().transform.parent = transform;
 	}
-	
+
 	void endSecondaryManipulation(){
 		secondaryManipulationActive = false;
 	}
-	
+
 	void endTwoControllerManipulation(){
 		primaryManipulationActive = false;
 		secondaryManipulationActive = false;
 	}
-	
+
 	void primaryEngagementStarted() {
-		Debug.Log("primaryEngagementStarted");
 		switch(gameStateManager.CurrentControlMode){
 			case ControlMode.Manipulate:
 				startManipulation("primary");
 				break;
 		}
 	}
-	
+
 	void primaryEngagementDragged() {
 		// Debug.Log("primaryEngagementDragged");
 	}
-	
+
 	void primaryEngagementEnded() {
 		// Debug.Log("primaryEngagementEnded");
 		switch(gameStateManager.CurrentControlMode){
@@ -252,22 +250,17 @@ public class GameManager : MonoBehaviour
 				break;
 		}
 	}
-	
-	void mouseScrollWheelStarted() {
-		// Debug.Log("mouseScrollWheelStarted");
-		Debug.Log(gameStateManager.IncrementControlMode());
-	}
-	
+
 	void editCurrentHighlight() {
-		Debug.Log("editCurrentHighlight()...");
+		// Debug.Log("editCurrentHighlight()...");
 		// highlightedSelection.objects[0].GetComponent<Emitter>().setFrequency(600);
 		highlightedSelection.objects[0].GetComponent<Emitter>().turnOn();
 	}
-	
+
 	Vector3 SnapPosition(Vector3 position) {
 		return position;
 	}
-	
+
 	GameObject ConstructCompoundObjectMenu() {
 		GameObject menu = Instantiate(new GameObject(), new Vector3(0, 1f, 0), Quaternion.identity);
 		
@@ -290,19 +283,19 @@ public class GameManager : MonoBehaviour
 		
 		return menu;
 	}
-	
+
 	void pause(){
 		Time.timeScale = 0.01f;
 		paused = true;
-		Debug.Log("paused");
+		// Debug.Log("paused");
 	}
-	
+
 	void unpause(){
 		Time.timeScale = 1;
 		paused = false;
-		Debug.Log("unpaused");
+		// Debug.Log("unpaused");
 	}
-	
+
 	void togglePause(){
 		if(paused){
 			unpause();

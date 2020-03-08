@@ -19,7 +19,7 @@ public class Tool : MonoBehaviour
 	private Vector3 originalScale;
 	private Vector3 activeScale;
 	
-	public Tool(string name, Action<Tool, Collision> collisionCallback){
+	public Tool(string name, Action<Tool, Collision> collisionCallback) {
 		this.name = name;
 		this.collisionCallback = collisionCallback;
 	}
@@ -42,7 +42,7 @@ public class Tool : MonoBehaviour
 		ProcessActive(bounds.Contains(interactor.transform.position));
 	}
 	
-	void ProcessActive(bool active){
+	void ProcessActive(bool active) {
 		if(active){
 			if(!this.active)
 				Activate();
@@ -53,15 +53,15 @@ public class Tool : MonoBehaviour
 	}
 	
 	void Activate(){
-		Debug.Log("Activate()...");
+		// Debug.Log("Activate()...");
 		active = true;
 		renderer.material = activeMaterial;
 		transform.localScale = activeScale;
 		behaviour.Activate();
 	}
 	
-	void Deactivate(){
-		Debug.Log("Deactivate()...");
+	void Deactivate() {
+		// Debug.Log("Deactivate()...");
 		active = false;
 		renderer.material = inactiveMaterial;
 		transform.localScale = originalScale;
@@ -69,7 +69,7 @@ public class Tool : MonoBehaviour
 	}
 	
 	void OnCollisionEnter(Collision collision) {
-		Debug.Log("Collision Entered.");
+		// Debug.Log("Collision Entered.");
 		collisionCallback(this, collision);
 	}
 }

@@ -34,7 +34,7 @@ public class Emitter : MonoBehaviour
 	}
 	
 	void OnCollisionEnter(Collision collision) {
-		Debug.Log("Collision!");
+		// Debug.Log("Collision!");
         /*foreach (ContactPoint contact in collision.contacts)
         {
             Debug.DrawRay(contact.point, contact.normal, Color.white);
@@ -49,7 +49,7 @@ public class Emitter : MonoBehaviour
 	}
 	
 	public void spawnPrefab(){
-		Debug.Log(frequency);
+		// Debug.Log(frequency);
 		GameObject createdObject = Instantiate(particlePrefab, transform.position, Quaternion.identity);
 		createdObject.transform.rotation = transform.rotation;
         createdObject.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
