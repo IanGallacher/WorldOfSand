@@ -13,17 +13,14 @@ public class Emitter : MonoBehaviour
     private float waitTime = 2.0f;
 	private float force = 5.0f;
 	
-	void Start(){
+	void Start() {
 	
 	}
 	
-	void Update(){
-		if(!on)
-			return;
-			
-		if(frequency <= 0)
-			return;
-		
+	void Update() {
+		if(!on) { return; }
+		if(frequency <= 0) { return; }
+
 		elapsedTime += Time.deltaTime;
 
         if (elapsedTime > waitTime)
@@ -39,28 +36,29 @@ public class Emitter : MonoBehaviour
         {
             Debug.DrawRay(contact.point, contact.normal, Color.white);
         }
-        if (collision.relativeVelocity.magnitude > 2)
+        if (collision.relativeVelocity.magnitude > 2) {
             audioSource.Play();*/
+		// }
     }
-	
-	public void setFrequency(float frequency){
+
+	public void setFrequency(float frequency) {
 		this.frequency = frequency;
 		waitTime = 60 / frequency;
 	}
-	
-	public void spawnPrefab(){
+
+	public void spawnPrefab() {
 		// Debug.Log(frequency);
 		GameObject createdObject = Instantiate(particlePrefab, transform.position, Quaternion.identity);
 		createdObject.transform.rotation = transform.rotation;
         createdObject.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
 		createdObject.GetComponent<Rigidbody>().AddForce(transform.up * -1f * force, ForceMode.Impulse);
 	}
-	
-	public void turnOn(){
+
+	public void turnOn() {
 		on = true;
 	}
-	
-	public void turnOff(){
+
+	public void turnOff() {
 		on = false;
 	}
 	

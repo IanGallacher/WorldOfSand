@@ -11,7 +11,7 @@ public class Knob : MonoBehaviour
 	float startingControllerZ;
 	float minimumRotation = -30;
 	float maximumRotation = 210;
-	
+
     void Start()
     {
         subController = new GameObject();
@@ -19,20 +19,19 @@ public class Knob : MonoBehaviour
 
     void Update()
     {
-        if(!active)
-			return;
+        if(!active) { return; }
 		
 		transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, startingZ + controller.transform.eulerAngles.z - startingControllerZ);
     }
-	
+
 	public void Activate(){
 		active = true;
-		
+
 		controller = GetComponent<Tool>().interactor;
 		startingZ = transform.eulerAngles.z;
 		startingControllerZ = controller.transform.eulerAngles.z;
 	}
-	
+
 	public void Deactivate(){
 		active = false;
 	}

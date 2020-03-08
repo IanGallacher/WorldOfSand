@@ -11,19 +11,19 @@ public class Tool : MonoBehaviour
 	public Material inactiveMaterial;
 	public Material activeMaterial;
 	public Knob behaviour;
-	
+
 	private bool active;
 	private float squaredRadius;
 	private Renderer renderer;
 	private Bounds bounds;
 	private Vector3 originalScale;
 	private Vector3 activeScale;
-	
+
 	public Tool(string name, Action<Tool, Collision> collisionCallback) {
 		this.name = name;
 		this.collisionCallback = collisionCallback;
 	}
-	
+
 	void Start() {
 		squaredRadius = (transform.localScale / 2f).sqrMagnitude + squaredActivationRadiusPadding;
 		renderer = GetComponent<Renderer>();
@@ -32,10 +32,9 @@ public class Tool : MonoBehaviour
 		originalScale = transform.localScale;
 		activeScale = transform.localScale * 1.1f;
 	}
-	
+
 	void Update() {
-		if(interactor == null)
-			return;
+		if(interactor == null) { return; }
 		
 		Vector3 delta = interactor.transform.position - transform.position;
 		// ProcessActive(delta.sqrMagnitude < squaredRadius);
@@ -43,12 +42,14 @@ public class Tool : MonoBehaviour
 	}
 	
 	void ProcessActive(bool active) {
-		if(active){
-			if(!this.active)
+		if(active) {
+			if(!this.active) {
 				Activate();
+			}
 		} else {
-			if(this.active)
+			if(this.active) {
 				Deactivate();
+			}
 		}
 	}
 	

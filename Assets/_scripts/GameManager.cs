@@ -14,9 +14,9 @@ public class GameManager : MonoBehaviour
 	public InputManager inputManager;
 	public GameObject currentMaterialPrefab;
 	public Material highlightMaterial;
-	
+
 	private string primaryInteractionButton = "Fire1";
-	
+
 	private List<GameObject> placedMaterials = new List<GameObject>();
 	private List<GameObject> uiObjects = new List<GameObject>();
 	private GameStateManager gameStateManager;
@@ -32,46 +32,42 @@ public class GameManager : MonoBehaviour
 	private GameObject manipulationAnchor;
 	private GameObject manipulationAnchorTarget;
 	private GameObject manipulationLookTarget;
-	private bool paused = true;
-	
+
     // Start is called before the first frame update
     void Start() {
 		TransformSnap.gridSize = gridSize;
 		inputManager.registerListener(primaryInteractionButton, "start", primaryEngagementStarted);
 		inputManager.registerListener(primaryInteractionButton, "drag", primaryEngagementDragged);
 		inputManager.registerListener(primaryInteractionButton, "stop", primaryEngagementEnded);
-		inputManager.registerButton("TogglePause", togglePause);
-		
+
 		pointer.transform.localScale = Vector3.zero;
         cursor.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
 		originalCursorMaterial = cursor.GetComponent<Renderer>().material;
 		gameStateManager = GameObject.Find("GameManager").GetComponent<GameStateManager>();
-		
+
 		manipulationAnchor = Instantiate(new GameObject(), transform.position, Quaternion.identity);
 		manipulationAnchor.AddComponent<Follower>();
 		Follower anchorFollower = manipulationAnchor.GetComponent<Follower>();
 		anchorFollower.target = pointer;
-		
+
 		compoundObjectMenu = ConstructCompoundObjectMenu();
-		
-		pause();
     }
-	
-	GameObject createCurrentMaterialAtCursor(CompoundObject compound = null){
+
+	GameObject createCurrentMaterialAtCursor(CompoundObject compound = null) {
 		return createPrefabAt(currentMaterialPrefab, cursor.transform, true, compound);
 	}
-	
+
 	GameObject createPrefabAt(GameObject prefab, Transform transform, bool placedMaterial = true, CompoundObject compound = null) {
 		GameObject createdObject = Instantiate(prefab, transform.position, Quaternion.identity);
 		createdObject.transform.rotation = transform.rotation;
         createdObject.transform.localScale = new Vector3(gridSize, gridSize, gridSize);
-		if(placedMaterial){
+		if(placedMaterial) {
 			placedMaterials.Add(createdObject);
-			if(compound != null){
+			if(compound != null) {
 				compound.Add(createdObject);
 			}
 		}
-		
+
 		return createdObject;
 	}
 
@@ -83,15 +79,15 @@ public class GameManager : MonoBehaviour
 		}*/
 		handleUserActions();
     }
-	
-	void handleUserActions(){
+
+	void handleUserActions() {
 		switch(gameStateManager.CurrentControlMode) {
 			case ControlMode.Create:
 				TransformSnap snap = TransformSnap.SnapToClosest(pointer, placedMaterials);
 				cursor.transform.position = snap.transform.position;
 				cursor.transform.rotation = snap.transform.rotation;
 				snapped = snap.snapped;
-				if(snap.snapped){
+				if(snap.snapped) {
 					cursor.GetComponent<Renderer>().material = highlightMaterial;
 					snappedTo = snap.target;
 				} else {
@@ -104,7 +100,7 @@ public class GameManager : MonoBehaviour
 				if(possibleSelection == null) {
 					ClearHighlightedSelection();
 				} else {
-					if(highlightedSelection != null){
+					if(highlightedSelection != null) {
 						ClearHighlightedSelection();
 					}
 					CompoundObject compoundSelection = CompoundObject.GetCompoundFor(possibleSelection);
@@ -129,43 +125,43 @@ public class GameManager : MonoBehaviour
 				break;*/
 		}
 	}
-	
-	void adoptTool(Tool tool, Collision collision){
+
+	void adoptTool(Tool tool, Collision collision) {
 		// Debug.Log("Adopting tool " + tool.name);
 	}
-	
-	void ClearHighlightedSelection(){
-		if(highlightedSelection == null)
-			return;
-		
-		foreach(GameObject gameObject in highlightedSelection.objects){
+
+	void ClearHighlightedSelection() {
+		if(highlightedSelection == null) { return; }
+
+		foreach(GameObject gameObject in highlightedSelection.objects) {
 			gameObject.GetComponent<Renderer>().material = previousMaterials[gameObject];
 		}
 		highlightedSelection = null;
 	}
-	
-	void HighlightSelection(CompoundObject selection){
+
+	void HighlightSelection(CompoundObject selection) {
 		highlightedSelection = selection;
-		
-		foreach(GameObject gameObject in selection.objects){
-			if(gameObject.GetComponent<Renderer>().material != highlightMaterial)
+
+		foreach(GameObject gameObject in selection.objects) {
+			if(gameObject.GetComponent<Renderer>().material != highlightMaterial) {
 				previousMaterials[gameObject] = gameObject.GetComponent<Renderer>().material;
-			
+			}
+
 			gameObject.GetComponent<Renderer>().material = highlightMaterial;
 		}
 	}
-	
-	void startManipulation(string engagementType){
-		switch(engagementType){
+
+	void startManipulation(string engagementType) {
+		switch(engagementType) {
 			case "primary":
-				if(secondaryManipulationActive){
+				if(secondaryManipulationActive) {
 					startTwoControllerManipulation();
 				} else {
 					startPrimaryManipulation();
 				}
 				break;
 			case "secondary":
-				if(primaryManipulationActive){
+				if(primaryManipulationActive) {
 					startTwoControllerManipulation();
 				} else {
 					startSecondayManipuation();
@@ -173,26 +169,25 @@ public class GameManager : MonoBehaviour
 				break;
 		}	
 	}
-	
-	void startPrimaryManipulation(){
+
+	void startPrimaryManipulation() {
 		primaryManipulationActive = true;
 		highlightedSelection.getParent().transform.parent = manipulationAnchor.transform;
 	}
-	
-	void startSecondayManipuation(){
+
+	void startSecondayManipuation() {
 		secondaryManipulationActive = true;
 	}
-	
-	void startTwoControllerManipulation(){
+
+	void startTwoControllerManipulation() {
 		primaryManipulationActive = true;
 		secondaryManipulationActive = true;
-		
 	}
-	
-	void endManipulation(string engagementType){
-		switch(engagementType){
+
+	void endManipulation(string engagementType) {
+		switch(engagementType) {
 			case "primary":
-				if(secondaryManipulationActive){
+				if(secondaryManipulationActive) {
 					endTwoControllerManipulation();
 					startSecondayManipuation();
 				} else {
@@ -200,7 +195,7 @@ public class GameManager : MonoBehaviour
 				}
 				break;
 			case "secondary":
-				if(primaryManipulationActive){
+				if(primaryManipulationActive) {
 					endTwoControllerManipulation();
 					startPrimaryManipulation();
 				} else {
@@ -210,22 +205,23 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void endPrimaryManipulation(){
+	void endPrimaryManipulation() {
 		primaryManipulationActive = false;
 		highlightedSelection.getParent().transform.parent = transform;
 	}
 
-	void endSecondaryManipulation(){
+	void endSecondaryManipulation() {
 		secondaryManipulationActive = false;
 	}
 
-	void endTwoControllerManipulation(){
+	void endTwoControllerManipulation() {
 		primaryManipulationActive = false;
 		secondaryManipulationActive = false;
-	}
+	}	public float solidifyTemperature;
+
 
 	void primaryEngagementStarted() {
-		switch(gameStateManager.CurrentControlMode){
+		switch(gameStateManager.CurrentControlMode) {
 			case ControlMode.Manipulate:
 				startManipulation("primary");
 				break;
@@ -238,7 +234,7 @@ public class GameManager : MonoBehaviour
 
 	void primaryEngagementEnded() {
 		// Debug.Log("primaryEngagementEnded");
-		switch(gameStateManager.CurrentControlMode){
+		switch(gameStateManager.CurrentControlMode) {
 			case ControlMode.Create:
 				createCurrentMaterialAtCursor(snapped ? CompoundObject.GetCompoundFor(snappedTo) : null);
 				break;
@@ -282,25 +278,5 @@ public class GameManager : MonoBehaviour
 		subSelectionTool.AddComponent<Tool>();
 		
 		return menu;
-	}
-
-	void pause(){
-		Time.timeScale = 0.01f;
-		paused = true;
-		// Debug.Log("paused");
-	}
-
-	void unpause(){
-		Time.timeScale = 1;
-		paused = false;
-		// Debug.Log("unpaused");
-	}
-
-	void togglePause(){
-		if(paused){
-			unpause();
-		} else {
-			pause();
-		}
 	}
 }

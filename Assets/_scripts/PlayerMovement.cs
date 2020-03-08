@@ -22,14 +22,16 @@ public class PlayerMovement : MonoBehaviour
 	void Start ()
 	{
 		// Make the rigid body not change rotation
-		if (GetComponent<Rigidbody>())
+		if (GetComponent<Rigidbody>()) {
 			GetComponent<Rigidbody>().freezeRotation = true;
+		}
 		originalRotation = transform.localRotation;
-		if(lockY)
+		if(lockY) {
 			lockYPosition();
+		}
 	}
 	
-	void lockYPosition(){
+	void lockYPosition() {
 		lockY = true;
 		lockedY = transform.position.y;
 	}
@@ -61,28 +63,31 @@ public class PlayerMovement : MonoBehaviour
 			Quaternion yQuaternion = Quaternion.AngleAxis (-rotationY, Vector3.right);
 			transform.localRotation = originalRotation * yQuaternion;
 		}
-		if(Input.GetAxis("Vertical") > 0){
+		if(Input.GetAxis("Vertical") > 0) {
 			transform.position += transform.forward * Time.deltaTime * walkSpeed;
 		}
-		if(Input.GetAxis("Vertical") < 0){
+		if(Input.GetAxis("Vertical") < 0) {
 			transform.position -= transform.forward * Time.deltaTime * walkSpeed;
 		}
-		if(Input.GetAxis("Horizontal") > 0){
+		if(Input.GetAxis("Horizontal") > 0) {
 			transform.position += transform.right * Time.deltaTime * walkSpeed;
 		}
-		if(Input.GetAxis("Horizontal") < 0){
+		if(Input.GetAxis("Horizontal") < 0) {
 			transform.position -= transform.right * Time.deltaTime * walkSpeed;
 		}
-		if(lockY)
+		if(lockY) {
 			transform.position = new Vector3(transform.position.x, lockedY, transform.position.z);
+		}
 	}
 
 	public static float ClampAngle (float angle, float min, float max)
 	{
-		if (angle < -360F)
+		if (angle < -360F) {
 			angle += 360F;
-		if (angle > 360F)
+		}
+		if (angle > 360F) {
 			angle -= 360F;
+		}
 		return Mathf.Clamp (angle, min, max);
 	}
 }

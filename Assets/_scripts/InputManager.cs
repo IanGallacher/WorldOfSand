@@ -31,10 +31,10 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        foreach(KeyValuePair<string, Dictionary<string, Action>> axis in listeners){
+        foreach(KeyValuePair<string, Dictionary<string, Action>> axis in listeners) {
 			process(axis.Key, Input.GetAxis(axis.Key) > 0);
 		}
-        foreach(KeyValuePair<string, Dictionary<string, Action>> axis in buttonListeners){
+        foreach(KeyValuePair<string, Dictionary<string, Action>> axis in buttonListeners) {
 			processButton(axis.Key, Input.GetButton(axis.Key));
 		}
     }
@@ -70,14 +70,17 @@ public class InputManager : MonoBehaviour
 	}
 	
 	public void registerListener(string axis, string action, Action callback){
-		if(!listeners.ContainsKey(axis))
+		if(!listeners.ContainsKey(axis)) {
 			listeners.Add(axis, new Dictionary<string, Action>());
+		}
 		
-		if(!active.ContainsKey(axis))
+		if(!active.ContainsKey(axis)) {
 			active.Add(axis, false);
+		}
 		
-		if(!listeners[axis].ContainsKey(action))
+		if(!listeners[axis].ContainsKey(action)) {
 			listeners[axis].Add(action, callback);
+		}
 		
 		listeners[axis][action] = callback;
 	}
@@ -86,83 +89,92 @@ public class InputManager : MonoBehaviour
 		registerButton(axis, "up", callback);
 	}
 	
-	public void registerButton(string axis, string action, Action callback){
-		if(!buttonListeners.ContainsKey(axis))
+	public void registerButton(string axis, string action, Action callback) {
+		if(!buttonListeners.ContainsKey(axis)) {
 			buttonListeners.Add(axis, new Dictionary<string, Action>());
+		}
 		
-		if(!active.ContainsKey(axis))
+		if(!active.ContainsKey(axis)) {
 			active.Add(axis, false);
+		}
 		
-		if(!buttonListeners[axis].ContainsKey(action))
+		if(!buttonListeners[axis].ContainsKey(action)) {
 			buttonListeners[axis].Add(action, callback);
+		}
 		
 		buttonListeners[axis][action] = callback;
 	}
 	
-	public void CursorMoved(){
-        foreach(KeyValuePair<string, Dictionary<string, Action>> axis in listeners){
+	public void CursorMoved() {
+        foreach(KeyValuePair<string, Dictionary<string, Action>> axis in listeners) {
 			if(active[axis.Key] && axis.Value.ContainsKey("drag"))
 				axis.Value["drag"]();
 		}
 	}
 	
-	void process(string axis, bool down){
-		if(active[axis]){
-			if(down){
+	void process(string axis, bool down) {
+		if(active[axis]) {
+			if(down) {
 				continueAxis(axis);
-			} else{
+			} else {
 				stopAxis(axis);
 			}
-		} else{
-			if(down){
+		} else {
+			if(down) {
 				startAxis(axis);
 			}
 		}
 		active[axis] = down;
 	}
-	
-	void processButton(string axis, bool down){
-		if(active[axis]){
-			if(down){
+
+	void processButton(string axis, bool down) {
+		if(active[axis]) {
+			if(down) {
 				continueButtonAxis(axis);
-			} else{
+			} else {
 				stopButtonAxis(axis);
 			}
-		} else{
-			if(down){
+		} else {
+			if(down) {
 				startButtonAxis(axis);
 			}
 		}
 		active[axis] = down;
 	}
-	
-	void startAxis(string axis){
-		if(listeners[axis].ContainsKey("start"))
+
+	void startAxis(string axis) {
+		if(listeners[axis].ContainsKey("start")) {
 			listeners[axis]["start"]();
+		}
 	}
 	
-	void continueAxis(string axis){
-		if(listeners[axis].ContainsKey("continue"))
+	void continueAxis(string axis) {
+		if(listeners[axis].ContainsKey("continue")) {
 			listeners[axis]["continue"]();
+		}
 	}
 	
-	void stopAxis(string axis){
-		if(listeners[axis].ContainsKey("stop"))
+	void stopAxis(string axis) {
+		if(listeners[axis].ContainsKey("stop")) {
 			listeners[axis]["stop"]();
+		}
 	}
 	
-	void startButtonAxis(string axis){
-		if(buttonListeners[axis].ContainsKey("down"))
+	void startButtonAxis(string axis) {
+		if(buttonListeners[axis].ContainsKey("down")) {
 			buttonListeners[axis]["down"]();
+		}
 	}
 	
-	void continueButtonAxis(string axis){
-		if(buttonListeners[axis].ContainsKey("continue"))
+	void continueButtonAxis(string axis) {
+		if(buttonListeners[axis].ContainsKey("continue")) {
 			buttonListeners[axis]["continue"]();
+		}
 	}
 	
-	void stopButtonAxis(string axis){
-		if(buttonListeners[axis].ContainsKey("up"))
+	void stopButtonAxis(string axis) {
+		if(buttonListeners[axis].ContainsKey("up")) {
 			buttonListeners[axis]["up"]();
+		}
 	}
 }

@@ -6,14 +6,9 @@ using UnityEngine;
 public class WorldOfSandParticle : MonoBehaviour
 {	
 	private List<GameObject> nearbyObjects = new List<GameObject>();
-	
-	
-	void Start(){
-	
-	}
-	
-	void Update(){
-		foreach(GameObject nearby in nearbyObjects){
+
+	void Update() {
+		foreach(GameObject nearby in nearbyObjects) {
 			GetComponent<Reactor>().ReactWith(nearby);
 		}
 	}
