@@ -73,10 +73,6 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-		/*Vector3 newCursorPosition = SnapPosition(pointer.transform.position);
-		if(newCursorPosition != cursor.transform.position){
-			inputManager.CursorMoved();
-		}*/
 		handleUserActions();
     }
 
@@ -251,10 +247,6 @@ public class GameManager : MonoBehaviour
 		// Debug.Log("editCurrentHighlight()...");
 		// highlightedSelection.objects[0].GetComponent<Emitter>().setFrequency(600);
 		highlightedSelection.objects[0].GetComponent<Emitter>().turnOn();
-	}
-
-	Vector3 SnapPosition(Vector3 position) {
-		return position;
 	}
 
 	GameObject ConstructCompoundObjectMenu() {
