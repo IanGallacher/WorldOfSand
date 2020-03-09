@@ -251,6 +251,7 @@ public class GameManager : MonoBehaviour
 
 	GameObject ConstructCompoundObjectMenu() {
 		GameObject menu = Instantiate(new GameObject(), new Vector3(0, 1f, 0), Quaternion.identity);
+		menu.name = "PARENT OBJECT";
 		
 		GameObject subSelectionTool = Instantiate(new GameObject(), menu.transform.position, Quaternion.identity);
 		subSelectionTool.transform.parent = menu.transform;

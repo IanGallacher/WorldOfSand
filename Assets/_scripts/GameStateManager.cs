@@ -60,7 +60,7 @@ public class GameStateManager : MonoBehaviour
 		_interactableObjectManager.ExitPlayMode();
 	}
 
-	public void UnpauseGame()
+	public void PlayGame()
 	{
 		if(_currentGameState == GameState.Play) { return; }
 		_currentGameState = GameState.Play;

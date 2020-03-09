@@ -42,7 +42,7 @@ public class MoleculeDebugMenu : EditorWindow
             gameStateManager.PauseGame();
         }
         if (GUILayout.Button("Unpause")) {
-            gameStateManager.UnpauseGame();
+            gameStateManager.PlayGame();
         }
     }
 
