@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2942175904286541656}
   - component: {fileID: 2942175904286541659}
   - component: {fileID: 2942175904286541657}
+  - component: {fileID: 1553782123087265862}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,8 +48,10 @@ MonoBehaviour:
   gridSize: 0.1
   cursor: {fileID: 0}
   pointer: {fileID: 0}
+  secondaryPointer: {fileID: 0}
   inputManager: {fileID: 0}
   currentMaterialPrefab: {fileID: 0}
+  highlightMaterial: {fileID: 0}
 --- !u!114 &2942175904286541657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,5 +62,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20581be7ec722b4a4a96660ce5037d1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameStateTransitionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _interactableObjectManager: {fileID: 0}
+  _currentGameState: 0
+  _currentControlMode: 0
+--- !u!114 &1553782123087265862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2942175904286541658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b362d19dc98777686f3af99787c889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

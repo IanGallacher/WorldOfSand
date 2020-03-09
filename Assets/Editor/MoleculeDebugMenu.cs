@@ -22,7 +22,8 @@ public class MoleculeDebugMenu : EditorWindow
 
     private void renderControllerButtons()
     {
-        InputManager inputManager = GameObject.Find("/InputManager")?.GetComponent<InputManager>();
+        var inputManager = GameObject.Find("/InputManager")?.GetComponent<InputManager>();
+        var gameStateManager = GameObject.Find("/GameManager")?.GetComponent<GameStateManager>();
         if(inputManager == null) return;
 
         if (GUILayout.Button("Squeeze Right")) {
@@ -36,6 +37,12 @@ public class MoleculeDebugMenu : EditorWindow
         }
         if (GUILayout.Button("Left Trigger")) {
             inputManager.LeftTriggerFired();
+        }
+        if (GUILayout.Button("Pause")) {
+            gameStateManager.PauseGame();
+        }
+        if (GUILayout.Button("Unpause")) {
+            gameStateManager.UnpauseGame();
         }
     }
 
